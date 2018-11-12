@@ -1,0 +1,13 @@
+- hosts: all
+  become: yes
+  tasks:
+    - name: unmount partition
+      mount:
+        src: "{{ dev }}"
+        path: "{{ path }}"
+        state: absent
+    - name: delete partition
+      parted:
+        device: "{{ blk_dev }}"
+        number: "{{ number }}"
+        state: absent

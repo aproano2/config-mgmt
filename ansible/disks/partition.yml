@@ -1,0 +1,18 @@
+- hosts: all
+  become: yes
+  tasks:
+    - name: create partition
+      parted:
+        device: "{{ blk_dev }}"
+        number: 1
+        state: present
+    - name: install filesystem
+      filesystem:
+        fstype: "{{ fstype }}"
+        dev: "{{ dev }}"
+    - name: mount the new partition
+      mount:
+        fstype: "{{ fstype }}"
+        src: "{{ dev }}"
+        path: "{{ path }}"
+        state: mounted

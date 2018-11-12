@@ -1,0 +1,10 @@
+# emacs
+*~
+*#
+.#*
+
+# ansible
+*.retry
+
+# mac
+.DS_Store

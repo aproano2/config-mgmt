@@ -1,0 +1,24 @@
+version: "2"
+services:
+  anaconda:
+    build: .
+    ports:
+      - "8888:8888"
+    command: mkdir -p "/opt/notebooks"
+    command: conda update -n base conda
+    command: conda install keras
+    volumes:
+      - directory_to_notebooks:/opt/notebooks/
+    restart: always
+    command: /bin/bash -c "/opt/conda/bin/conda install jupyter -y --quiet && /opt/conda/bin/jupyter notebook --notebook-dir=/opt/notebooks --NotebookApp.token='' --ip='*' --port=8888 --no-browser --allow-root"
+  nbviewer:
+    image: jupyter/nbviewer
+    command: python3 -m nbviewer --no-cache --localfiles=/localfiles
+    links:
+      - nbcache
+    ports:
+      - 8080:5000
+    volumes:
+      - directory_to_notebooks:/localfiles/udacity
+  nbcache:
+    image: memcached
